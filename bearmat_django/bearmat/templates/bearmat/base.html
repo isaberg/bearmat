@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Bearmat</title>
+        <link rel="stylesheet" href="{% static 'css/bearmat.css' %}">
+    </head>
+    <body>
+        <h1>Bearmat</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Team</a>
+            <div class="user-info">
+                {% if user.is_authenticated %}
+                    Welcome, {{ user.username }}
+                    <a href="{% url 'logout' %}">SignOut</a>
+                {% else %}
+                    <a href="{% url 'login' %}">LogIn</a>
+                    <a href="{% url 'signup' %}">SignUp</a>
+                {% endif %}
+            </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

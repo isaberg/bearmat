@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'material.frontend',
     'viewflow',
     'viewflow.frontend',
+    'localflavor',
     'bearmat',
 
 ]
