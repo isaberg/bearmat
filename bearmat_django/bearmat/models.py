@@ -78,7 +78,7 @@ class Search(models.Model):
     ('SOFTWARE', 'Software'), ('STORAGE', 'Storage'), ('TECHNOLOGY', 'Technology'), ('TRADES', 'Trades'),
     ('TRANSPORTATION', 'Transportation'), ('WASTEMGMT', 'Waste Management')
     )
-    veteran = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='searches')
+    veteran = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='searches',)
     name = models.CharField('search title', max_length=75)
     early = models.DateField('earliest full time start date')
     late = models.DateField('latest full time start date')
@@ -149,7 +149,7 @@ class Business(models.Model):
     ('SOFTWARE', 'Software'), ('STORAGE', 'Storage'), ('TECHNOLOGY', 'Technology'), ('TRADES', 'Trades'),
     ('TRANSPORTATION', 'Transportation'), ('WASTEMGMT', 'Waste Management')
     )
-    broker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='businesses')
+    broker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='businesses',)
     name = models.CharField('business name', max_length=100)
     city = models.CharField(max_length=100)
     price = models.CharField('selling price', max_length=100)
@@ -168,5 +168,5 @@ class Business(models.Model):
         return self.name
 
 class Favorite(models.Model):
-    veteran = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='favorites')
-    business = models.ForeignKey(Business, related_name='favorites', on_delete=models.CASCADE)
+    veteran = models.ForeignKey(settings.AUTH_USER.MODEL, on_delete=models.CASCADE, related_name='favorites',)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='favorites',)
