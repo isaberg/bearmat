@@ -14,12 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 from django.conf.urls import include, url
 from django.views import generic
 from material.frontend import urls as frontend_urls
 from bearmat import views as bearmat_views
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin', admin.site.urls),
@@ -30,7 +29,7 @@ urlpatterns = [
     path('accounts/signup/broker', bearmat_views.BrokerSignUpView.as_view(), name='broker_signup')
 ]
 
-# Defaults from django.contrib.auth.urls
+# Defaults provided from django.contrib.auth.urls
 # accounts/login/ [name='login']
 # accounts/logout/ [name='logout']
 # accounts/password_change/ [name='password_change']

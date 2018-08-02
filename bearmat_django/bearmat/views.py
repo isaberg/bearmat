@@ -4,8 +4,8 @@ from django.views.generic import CreateView, TemplateView
 from django.contrib.auth.decorators import login_required
 from decorators import veteran_required, broker_required
 from forms import SignUpForm
-from models import User, Profile, Search, Business, Message
-
+from models import Profile, Search, Business, Message
+from django.contrib.auth.models import User
 
 ## Strategy: Use default authentication for user login at root/accounts/login etc
 ## Once authenticated / logged in, PROFILE creation happens
@@ -57,6 +57,22 @@ class brokerSignUpView(CreateView):
         login(self.request, user)
         return redirect('home')
 
+@login_required
+def profile_detail(request):
+    profile = Profile.objects.get(id=pk)
+    return render(request, 'tunr/artist_detail.html', {'artist': artist})
+
+
+@login_required
+def profile_create(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            song = form.save()
+            return redirect('song_detail', pk=song.pk)
+    else:
+        form = SongForm()
+    return render(request, 'tunr/song_form.html', {'form': form})
 
 
 

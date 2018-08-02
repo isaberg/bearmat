@@ -1,8 +1,9 @@
 from django import forms
-from .models import broker, Veteran, Business, Search
+from .models import Profile, Search, Business, Favorite
 from localflavor import generic
 from localflavor.us.forms import USStateField, USZipCodeField
 from django.db import transaction
+from django.contrib.auth.models import User
 
 # this handles all user signup - must distinguish between vets and brokers
 class VeteranSignUpForm(UserCreationForm):
@@ -35,39 +36,43 @@ class BrokerSignUpForm(UserCreationForm):
             user.save()
         return user
 
-# this handles profile creation for veterans
-# model this conditional off of
+# this handles profile creation for veterans and brokers
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = (first_name, last_name, location_zip, location_state, profile_url, org_name, org_url, education, bio)
+    help_texts = {
+        'location_zip': 'format example: #####'
+        'location_state': 'format example: MT',
+        'profile_url': 'copy/paste image source URL from image hosting provider',
+        'org_name': 'name of your current organization, service, employer or school',
+        'org_url': 'copy/paste URL of organization homepage',
+        'education': 'brief summary of formal education and any honors',
+        'bio': 'brief bio'
+        }
 
 class SearchForm(forms.ModelForm):
-    state = USStateField()
-    zip = USZipCodeField()
-
     class Meta:
-        model = Profile
-        fields = ('', '')
+        model = Search
+        fields = (name, early, late, state, industry)
+        help_texts = {
+            'name': 'brief description example: New England summer 2019, US Army infantry officer, experience in construction'
+            'early': 'the earliest date to go full time on this search',
+            'late': 'the latest date to go full time on this search',
+            'state': 'pick the state or states your are willing to pursue entrepreneurship in',
+            'industry': 'pick the industries you are most interested in',
+            }
 
-
-## SAVE this, look at use of queryset and widget for future checkbox in "Search" creation...
-
-# class StudentSignUpForm(UserCreationForm):
-#     interests = forms.ModelMultipleChoiceField(
-#         queryset=Subject.objects.all(),
-#         widget=forms.CheckboxSelectMultiple,
-#         required=True
-#     )
-#
-#     class Meta(UserCreationForm.Meta):
-#         model = User
-#
-#     @transaction.atomic
-#     def save(self):
-#         user = super().save(commit=False)
-#         user.is_student = True
-#         user.save()
-#         student = Student.objects.create(user=user)
-#         student.interests.add(*self.cleaned_data.get('interests'))
-#         return user
+class BusinessForm(forms.ModelForm):
+    class Meta:
+        model = Business
+        fields = (name, city, price, early, late, state, industry)
+    help_texts = {
+        'name': 'name of business for sale',
+        'city': 'city in which business is headquartered',
+        'price': 'price and associated terms in brief',
+        'early': 'the earliest date for sale',
+        'late': 'the latest date for sale',
+        'state': 'pick the state this business is located in',
+        'industry': 'pick the industries most closely associated with this business',
+        }

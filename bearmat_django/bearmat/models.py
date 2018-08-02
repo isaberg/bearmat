@@ -2,6 +2,7 @@ from django.db import models
 from viewflow.models import Process
 from localflavor.us.models import USZipCodeField, USStateField
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 # validating here in models rather than mess with CreateView in my View-Form process...
 
@@ -15,11 +16,11 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=30)
     location_zip = USZipCodeField()
     location_state = USStateField()
-    profile_url = models.TextField(null=True, blank=True)
-    org_name = models.CharField(max_length=100)
-    org_url = models.TextField(null=True, blank=True)
-    education = models.CharField(max_length=280)
-    bio = models.CharField(max_length=280)
+    profile_url = models.TextField('profile picture URL', null=True, blank=True)
+    org_name = models.CharField('organization name', max_length=100)
+    org_url = models.TextField('organization website', null=True, blank=True)
+    education = models.CharField('summary of education', max_length=280)
+    bio = models.CharField('short biography', max_length=280)
     last_update = models.DateField(auto_now=true)
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -77,15 +78,17 @@ class Search(models.Model):
     ('SOFTWARE', 'Software'), ('STORAGE', 'Storage'), ('TECHNOLOGY', 'Technology'), ('TRADES', 'Trades'),
     ('TRANSPORTATION', 'Transportation'), ('WASTEMGMT', 'Waste Management')
     )
-    veteran = models.ForeignKey(auth.User, on_delete=models.CASCADE, related_name='searches')
-    name = models.CharField(max_length=100)
-    early = models.DateField()
-    late = models.DateField()
+    veteran = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='searches')
+    name = models.CharField('search title', max_length=75)
+    early = models.DateField('earliest full time start date')
+    late = models.DateField('latest full time start date')
     state = models.CharField(
+        'states of interest',
         choices=STATE_CHOICES,
         default='MT'
     )
     industry = models.CharField(
+        'industries of interest',
         max_length=2,
         choices=INDUSTRY_CHOICES,
         default='TRADES'
@@ -146,12 +149,12 @@ class Business(models.Model):
     ('SOFTWARE', 'Software'), ('STORAGE', 'Storage'), ('TECHNOLOGY', 'Technology'), ('TRADES', 'Trades'),
     ('TRANSPORTATION', 'Transportation'), ('WASTEMGMT', 'Waste Management')
     )
-    broker = models.ForeignKey(auth.User, on_delete=models.CASCADE, related_name='businesses')
-    name = models.CharField(max_length=100)
+    broker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='businesses')
+    name = models.CharField('business name', max_length=100)
     city = models.CharField(max_length=100)
-    price = models.CharField(max_length=100)
-    early = models.DateField()
-    late = models.DateField()
+    price = models.CharField('selling price', max_length=100)
+    early = models.DateField('beginning of availability')
+    late = models.DateField('end of availability')
     state = models.CharField(
         choices=STATE_CHOICES,
         default='MT'
