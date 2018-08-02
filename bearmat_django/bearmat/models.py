@@ -11,7 +11,7 @@ class User(AbstractUser):
     is_broker = models.BooleanField(default=False)
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     location_zip = USZipCodeField()
