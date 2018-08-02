@@ -1,5 +1,5 @@
 from django import forms
-from .models import Brokerage, Veteran, Business, Search
+from .models import broker, Veteran, Business, Search
 from localflavor.us.forms import USStateField, USZipCodeField
 from django.db import transaction
 
@@ -18,21 +18,23 @@ class VeteranSignUpForm(UserCreationForm):
             user.save()
         return user
 
+class BrokerSignUpForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+    def save (self, commit=True):
+        user = super().save(commit=False)
+        user.is_veteran = True
+        if commit:
+            user.save()
+        return user
 
-## MUST use this approach:
-#
-# class TeacherSignUpForm(UserCreationForm):
-#     class Meta(UserCreationForm.Meta):
-#         model = User
-#
-#     def save(self, commit=True):
-#         user = super().save(commit=False)
-#         user.is_teacher = True
-#         if commit:
-#             user.save()
-#         return user
-#
-#
+
+## MUST use this approach, invoked by conditional in views.py
+
 # class StudentSignUpForm(UserCreationForm):
 #     interests = forms.ModelMultipleChoiceField(
 #         queryset=Subject.objects.all(),
@@ -84,7 +86,7 @@ class VeteranForm(forms.ModelForm):
 #         return user
 
 
-class BrokerageForm(forms.ModelForm):
+class brokerForm(forms.ModelForm):
     state = USStateField()
     zip = USZipCodeField()
 

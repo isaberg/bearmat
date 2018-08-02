@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home')
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('profile', views.profile_detail, name='profile_detail')
+    path('profile/', views.profile_detail, name='profile_detail')
+    path('profile/new', views.profile_create, name='profile_create')
 
     # path('', views.artist_list, name='artist_list'),
     # path('artists/<int:pk>', views.artist_detail, name='artist_detail'),

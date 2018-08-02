@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'viewflow',
     'viewflow.frontend',
     'localflavor',
+    'crispy_forms',
     'bearmat',
-
 ]
 
 AUTH_USER_MODEL = 'bearmat.User'

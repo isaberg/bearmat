@@ -18,14 +18,39 @@ from django.urls import include, path
 from django.conf.urls import include, url
 from django.views import generic
 from material.frontend import urls as frontend_urls
-
 from bearmat import views as bearmat_views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin', admin.site.urls),
     path('', include('bearmat.urls')),
-    path('accounts/login/', auth_views.login, name='login'),
-    path('accounts/logout/', auth_views.logout, name='logout'),
-    path('accounts/signup/', bearmat_views.signup, name='signup'),
+    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/signup/', bearmat_views.SignUpView.as_view(), name='signup')
+    path('accounts/signup/veteran', bearmat_views.VeteranSignUpView.as_view(), name='veteran_signup')
+    path('accounts/signup/broker', bearmat_views.BrokerSignUpView.as_view(), name='broker_signup')
 ]
+
+# Defaults from django.contrib.auth.urls
+# accounts/login/ [name='login']
+# accounts/logout/ [name='logout']
+# accounts/password_change/ [name='password_change']
+# accounts/password_change/done/ [name='password_change_done']
+# accounts/password_reset/ [name='password_reset']
+# accounts/password_reset/done/ [name='password_reset_done']
+# accounts/reset/<uidb64>/<token>/ [name='password_reset_confirm']
+# accounts/reset/done/ [name='password_reset_complete']
+
+
+# Conditional example from Django Schools
+#
+# from django.urls import include, path
+#
+# from classroom.views import classroom, students, teachers
+#
+# urlpatterns = [
+#     path('', include('classroom.urls')),
+#     path('accounts/', include('django.contrib.auth.urls')),
+#     path('accounts/signup/', classroom.SignUpView.as_view(), name='signup'),
+#     path('accounts/signup/student/', students.StudentSignUpView.as_view(), name='student_signup'),
+#     path('accounts/signup/teacher/', teachers.TeacherSignUpView.as_view(), name='teacher_signup'),
+# ]

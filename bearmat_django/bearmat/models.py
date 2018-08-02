@@ -8,19 +8,29 @@ from django.contrib.auth.models import AbstractUser
 # localflavor.us.models.USZipCodeField()
 # localflavor.us.models.USStateField()
 
-
-
 class User(AbstractUser):
     is_veteran = models.BooleanField(default=False)
-    is_brokerage = models.BooleanField(default=False)
+    is_broker = models.BooleanField(default=False)
 
 # structure...maybe just have a "Profile" that captures veteran/broker info?
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    location_zip = USZipCodeField()
+    location_state = USStateField()
+    profile_url = models.TextField(null=True, blank=True)
+    org_name = models.CharField(max_length=100)
+    org_url = models.TextField(null=True, blank=True)
+    education = models.CharField(max_length=280)
+    bio = models.CharField(max_length=280)
+    lastUpdated
 
 class Search(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='searches')
+    veteran = models.ForeignKey(User, on_delete=models.CASCADE, related_name='searches')
+    early = models.
+
 
 
 class Business(models.Model):
@@ -46,8 +56,8 @@ class Veteran(models.Model):
     # firstName: lastName: location: service: education:
     # bio: messages: profileURL:
 
-class Brokerage(models.Model):
-    # This is what the brokerage model needs:
+class Broker(models.Model):
+    # This is what the broker model needs:
     # firstName:
     # lastName: profileURL: organization: organizationURL: location:
 
