@@ -2,7 +2,9 @@ from django.db import models
 from viewflow.models import Process
 from localflavor.us.models import USZipCodeField, USStateField
 from django.contrib.auth.models import AbstractUser
-from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 # validating here in models rather than mess with CreateView in my View-Form process...
 
@@ -11,7 +13,7 @@ class User(AbstractUser):
     is_broker = models.BooleanField(default=False)
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     location_zip = USZipCodeField()
@@ -21,9 +23,18 @@ class Profile(models.Model):
     org_url = models.TextField('organization website', null=True, blank=True)
     education = models.CharField('summary of education', max_length=280)
     bio = models.CharField('short biography', max_length=280)
-    last_update = models.DateField(auto_now=true)
+    last_update = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 class Search(models.Model):
     STATE_CHOICES = (
@@ -78,21 +89,23 @@ class Search(models.Model):
     ('SOFTWARE', 'Software'), ('STORAGE', 'Storage'), ('TECHNOLOGY', 'Technology'), ('TRADES', 'Trades'),
     ('TRANSPORTATION', 'Transportation'), ('WASTEMGMT', 'Waste Management')
     )
-    veteran = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='searches',)
+    veteran = models.ForeignKey(User, on_delete=models.CASCADE, related_name='searches')
     name = models.CharField('search title', max_length=75)
     early = models.DateField('earliest full time start date')
     late = models.DateField('latest full time start date')
     state = models.CharField(
         'states of interest',
         choices=STATE_CHOICES,
-        default='MT'
+        default='MT',
+        max_length=100
     )
     industry = models.CharField(
         'industries of interest',
-        max_length=2,
+        max_length=100,
         choices=INDUSTRY_CHOICES,
         default='TRADES'
     )
+    last_update = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
 
@@ -149,7 +162,7 @@ class Business(models.Model):
     ('SOFTWARE', 'Software'), ('STORAGE', 'Storage'), ('TECHNOLOGY', 'Technology'), ('TRADES', 'Trades'),
     ('TRANSPORTATION', 'Transportation'), ('WASTEMGMT', 'Waste Management')
     )
-    broker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='businesses',)
+    broker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='businesses',)
     name = models.CharField('business name', max_length=100)
     city = models.CharField(max_length=100)
     price = models.CharField('selling price', max_length=100)
@@ -157,16 +170,18 @@ class Business(models.Model):
     late = models.DateField('end of availability')
     state = models.CharField(
         choices=STATE_CHOICES,
-        default='MT'
+        default='MT',
+        max_length=100
     )
     industry = models.CharField(
-        max_length=2,
+        max_length=100,
         choices=INDUSTRY_CHOICES,
         default='TRADES'
     )
+    last_update = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
 
 class Favorite(models.Model):
-    veteran = models.ForeignKey(settings.AUTH_USER.MODEL, on_delete=models.CASCADE, related_name='favorites',)
+    veteran = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites',)
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='favorites',)

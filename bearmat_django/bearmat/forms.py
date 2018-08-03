@@ -4,6 +4,8 @@ from localflavor import generic
 from localflavor.us.forms import USStateField, USZipCodeField
 from django.db import transaction
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+
 
 # this handles all user signup - must distinguish between vets and brokers
 class VeteranSignUpForm(UserCreationForm):
@@ -12,7 +14,7 @@ class VeteranSignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
     @transaction.atomic
     def save (self, commit=True):
         user = super().save(commit=False)
@@ -27,7 +29,7 @@ class BrokerSignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
     @transaction.atomic
     def save (self, commit=True):
         user = super().save(commit=False)
@@ -40,9 +42,9 @@ class BrokerSignUpForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = (first_name, last_name, location_zip, location_state, profile_url, org_name, org_url, education, bio)
+        fields = ('first_name', 'last_name', 'location_zip', 'location_state', 'profile_url', 'org_name', 'org_url', 'education', 'bio')
     help_texts = {
-        'location_zip': 'format example: #####'
+        'location_zip': 'format example: #####',
         'location_state': 'format example: MT',
         'profile_url': 'copy/paste image source URL from image hosting provider',
         'org_name': 'name of your current organization, service, employer or school',
@@ -54,9 +56,9 @@ class ProfileForm(forms.ModelForm):
 class SearchForm(forms.ModelForm):
     class Meta:
         model = Search
-        fields = (name, early, late, state, industry)
+        fields = ('name', 'early', 'late', 'state', 'industry')
         help_texts = {
-            'name': 'brief description example: New England summer 2019, US Army infantry officer, experience in construction'
+            'name': 'brief description example: New England summer 2019, US Army infantry officer, experience in construction',
             'early': 'the earliest date to go full time on this search',
             'late': 'the latest date to go full time on this search',
             'state': 'pick the state or states your are willing to pursue entrepreneurship in',
@@ -66,7 +68,7 @@ class SearchForm(forms.ModelForm):
 class BusinessForm(forms.ModelForm):
     class Meta:
         model = Business
-        fields = (name, city, price, early, late, state, industry)
+        fields = ('name', 'city', 'price', 'early', 'late', 'state', 'industry')
     help_texts = {
         'name': 'name of business for sale',
         'city': 'city in which business is headquartered',

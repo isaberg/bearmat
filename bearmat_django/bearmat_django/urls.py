@@ -23,10 +23,10 @@ from bearmat import views as bearmat_views
 urlpatterns = [
     path('admin', admin.site.urls),
     path('', include('bearmat.urls')),
-    path('accounts/', include('django.contrib.auth.urls'))
-    path('accounts/signup/', bearmat_views.SignUpView.as_view(), name='signup')
-    path('accounts/signup/veteran', bearmat_views.VeteranSignUpView.as_view(), name='veteran_signup')
-    path('accounts/signup/broker', bearmat_views.BrokerSignUpView.as_view(), name='broker_signup')
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/signup/', bearmat_views.SignUpView.as_view(), name='signup'),
+    path('accounts/signup/veteran', bearmat_views.VeteranSignUpView.as_view(), name='veteran_signup'),
+    path('accounts/signup/broker', bearmat_views.BrokerSignUpView.as_view(), name='broker_signup'),
 ]
 
 # Defaults provided from django.contrib.auth.urls
@@ -38,18 +38,3 @@ urlpatterns = [
 # accounts/password_reset/done/ [name='password_reset_done']
 # accounts/reset/<uidb64>/<token>/ [name='password_reset_confirm']
 # accounts/reset/done/ [name='password_reset_complete']
-
-
-# Conditional example from Django Schools
-#
-# from django.urls import include, path
-#
-# from classroom.views import classroom, students, teachers
-#
-# urlpatterns = [
-#     path('', include('classroom.urls')),
-#     path('accounts/', include('django.contrib.auth.urls')),
-#     path('accounts/signup/', classroom.SignUpView.as_view(), name='signup'),
-#     path('accounts/signup/student/', students.StudentSignUpView.as_view(), name='student_signup'),
-#     path('accounts/signup/teacher/', teachers.TeacherSignUpView.as_view(), name='teacher_signup'),
-# ]

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'viewflow.frontend',
     'localflavor',
     'crispy_forms',
+    'annoying',
     'bearmat',
 ]
 

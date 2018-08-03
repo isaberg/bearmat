@@ -1,0 +1,23 @@
+{% extends 'bearmat/baseveteran.html' %}
+
+{% load favorite_tags %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1> Your Profile </h1>
+    <h2>{{ profile.first_name }} {{ profile.last_name}} <a href="{% url 'profile_edit' pk=profile.pk %}">(edit)</a></h2>
+    <h4>Location: ZIP {{ profile.location_zip }} in {{ profile.location_state }}</h4>
+
+    <img src="{{ profile.profile_url }}" alt="" class="profile-photo">
+
+    <h3>Searches <a href="{% url 'search_create' %}">(+)</a></h3>
+    <ul>
+        {% for search in profile.user.searches.all %}
+            <li>
+                <a href="{% url 'search_detail' pk=search.pk %}">{{ search.early }}-{{ search.state }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}
