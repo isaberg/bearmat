@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
 from django.views import generic
-from material.frontend import urls as frontend_urls
+# from material.frontend import urls as frontend_urls
 from bearmat import views as bearmat_views
 
 urlpatterns = [

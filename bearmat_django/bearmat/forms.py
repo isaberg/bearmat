@@ -3,8 +3,9 @@ from .models import Profile, Search, Business, Favorite
 from localflavor import generic
 from localflavor.us.forms import USStateField, USZipCodeField
 from django.db import transaction
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import (User, Profile, Search, Business, Favorite)
+
 
 
 # this handles all user signup - must distinguish between vets and brokers

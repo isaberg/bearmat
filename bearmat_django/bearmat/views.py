@@ -5,7 +5,10 @@ from django.contrib.auth.decorators import login_required
 from .decorators import veteran_required, broker_required
 from .forms import VeteranSignUpForm, BrokerSignUpForm, ProfileForm, SearchForm, BusinessForm
 from .models import Profile, Search, Business, Favorite
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 ## Strategy: Use default authentication for user login at root/accounts/login etc
 ## Once authenticated / logged in, PROFILE creation happens
 ## Veterans should see a different veteran/profile versus broker/profile
@@ -13,20 +16,15 @@ from django.contrib.auth.models import User
 def home(request):
     if request.user.is_authenticated:
         if request.user.is_veteran:
-            return redirect('veteran_home')
+            veterans = User.objects.filter(is_veteran=True)
+            return render(request, 'bearmat/veteran_home.html', {'veterans': veterans})
         else:
-            return redirect('broker_home')
+            brokers = User.objects.filter(is_broker=True)
+            return render(request, 'bearmat/broker_home.html', {'brokers': brokers})
     return render(request, 'bearmat/home.html')
 
-def veteran_home(request):
-    veterans = User.objects.filter(is_veteran=True)
-    return render(request, 'bearmat/veteran_home.html', {'veterans': veterans})
-    # challenge: change the above query to return Profile information related 1:1
-
-def broker_home(request):
-    brokers = User.objects.filter(is_broker=True)
-    return render(request, 'bearmat/broker_home.html', {'brokers': brokers})
-    # challenge: change the above query to return Profile information related 1:1
+def mission(request):
+    return render(request, 'bearmat/mission.html')
 
 class SignUpView(TemplateView):
     template_name = 'registration/signup.html'
@@ -71,7 +69,7 @@ def profile_detail(request, pk):
 @login_required
 def profile_edit(request, pk):
     if request.user.is_veteran:
-        profile = Profile.objects.get(id=pk)
+        profile = Profile.objects.get(user_id=pk)
         if request.method == "POST":
             form = ProfileForm(request.POST, instance=profile)
             if form.is_valid():
@@ -81,7 +79,7 @@ def profile_edit(request, pk):
             form = ProfileForm(instance=profile)
         return render(request, 'bearmat/profile_form_veteran.html', {'form': form})
     else:
-        profile = Profile.objects.get(id=pk)
+        profile = Profile.objects.get(user_id=pk)
         if request.method == "POST":
             form = ProfileForm(request.POST, instance=profile)
             if form.is_valid():

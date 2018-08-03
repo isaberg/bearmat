@@ -7,8 +7,8 @@
     <body>
         <h1>Bearmat</h1>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">Team</a>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'mission' %}">Mission</a>
             <div class="user-info">
                 {% if user.is_authenticated %}
                     Welcome, {{ user.username }}
