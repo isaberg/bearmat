@@ -1,7 +1,7 @@
 {% extends 'bearmat/base.html' %}
 
 {% block content %}
-<h2>Sign Up as a {{ user_type }}</h2>
+<h2>Sign Up</h2>
 <form method='POST' novalidate>
   {% csrf_token %}
   {{ form.as_p }}

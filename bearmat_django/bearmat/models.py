@@ -90,7 +90,7 @@ class Search(models.Model):
     ('SOFTWARE', 'Software'), ('STORAGE', 'Storage'), ('TECHNOLOGY', 'Technology'), ('TRADES', 'Trades'),
     ('TRANSPORTATION', 'Transportation'), ('WASTEMGMT', 'Waste Management')
     )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='searches')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='searches')
     name = models.CharField('search title', max_length=75)
     early = models.DateField('earliest full time start date')
     late = models.DateField('latest full time start date')
@@ -163,7 +163,7 @@ class Business(models.Model):
     ('SOFTWARE', 'Software'), ('STORAGE', 'Storage'), ('TECHNOLOGY', 'Technology'), ('TRADES', 'Trades'),
     ('TRANSPORTATION', 'Transportation'), ('WASTEMGMT', 'Waste Management')
     )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='businesses',)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='businesses',)
     name = models.CharField('business name', max_length=100)
     city = models.CharField(max_length=100)
     price = models.CharField('selling price', max_length=100)

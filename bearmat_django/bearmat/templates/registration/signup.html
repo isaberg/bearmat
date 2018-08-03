@@ -3,6 +3,8 @@
 {% block content %}
   <h2>Sign up for a free account</h2>
   <p> Select below the type of account you want to create</p>
-  <a href="{% url 'veteran_signup' %}" role="button">I'm a veteran</a>
-  <a href="{% url 'broker_signup' %}" role="button">I'm a broker</a>
+  <button class="save btn btn-default"> <a href="{% url 'veteran_signup' %}">Veteran</a> </button>
+  <br>
+  <br>
+  <button class="save btn btn-default"> <a href="{% url 'broker_signup' %}">Broker</a> </button>
 {% endblock %}
