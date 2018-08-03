@@ -1,0 +1,17 @@
+{% extends 'bearmat/baseveteran.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1> Search Details </h1>
+    <h2> Veteran: <a href="{% url 'profile_detail' pk=search.user.pk %}">{{ search.user }}</a>
+    <h2>{{ search.name }} <a href="{% url 'search_edit' pk=search.pk %}">(edit)</a></h2>
+    <a href="{% url 'search_delete' pk=search.pk %}">(delete search)</a>
+    <h4>earliest full-time date: {{ search.early }} </h4>
+    <h4>latest full-time date: {{ search.late }} </h4>
+    <h4>search target state: {{ search.state }} </h4>
+    <h4>search target industry: {{ search.industry }} </h4>
+    <h4>last update: {{ search.last_update }} </h4>
+
+{% endif %}
+{% endblock %}

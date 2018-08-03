@@ -3,11 +3,11 @@
 {% block content %}
   <h2>Welcome to Bearmat!</h2>
   <p>
-    If you want to know what Bearmat is about, check out our <a href='#'>Mission</a>.
+    If you want to know what Bearmat is about, check out our <a href="{% url 'mission' %}">Mission</a>.
   </p>
   <br>
   <p>
-    Make sure your profile is <a href='#'>up to date</a>. To begin your journey to entrepreneurship, go ahead and list your search details <a href='#'>here</a>.
+    To begin your journey to entrepreneurship, create your search <a href="{% url 'search_create' %}">here</a>.
   </p>
   <hr>
   <h3>What's this about?</h3>
@@ -20,7 +20,7 @@
   <ul>
     {% for veteran in veterans %}
         <p>
-            This is a placeholder - eventually query 1:1 Profiles based on User is_broker flag.
+            This is a placeholder - eventually query 1:1 Profiles based on User is_veteran flag.
         </p>
     {% endfor %}
   </ul>

@@ -9,6 +9,7 @@
         <nav>
             <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'mission' %}">Mission</a>
+            <a href="{% url 'search_list' %}">Searches</a>
             <div class="user-info">
                 {% if user.is_authenticated %}
                     Welcome, {{ user.username }}

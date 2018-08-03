@@ -60,11 +60,15 @@ class SearchForm(forms.ModelForm):
         fields = ('name', 'early', 'late', 'state', 'industry')
         help_texts = {
             'name': 'brief description example: New England summer 2019, US Army infantry officer, experience in construction',
-            'early': 'the earliest date to go full time on this search',
-            'late': 'the latest date to go full time on this search',
+            'early': 'the earliest date to go full time: format 1/1/2020',
+            'late': 'the latest date to go full time: format 1/1/2020',
             'state': 'pick the state or states your are willing to pursue entrepreneurship in',
             'industry': 'pick the industries you are most interested in',
             }
+    def form_valid(self, form):
+        form.instance.user_id = Profile.objects.get(user=self.request.user).id
+        return super(SearchForm, self).form_valid(form)
+
 
 class BusinessForm(forms.ModelForm):
     class Meta:
@@ -74,8 +78,11 @@ class BusinessForm(forms.ModelForm):
         'name': 'name of business for sale',
         'city': 'city in which business is headquartered',
         'price': 'price and associated terms in brief',
-        'early': 'the earliest date for sale',
-        'late': 'the latest date for sale',
+        'early': 'the earliest date for sale: format 1/1/2020',
+        'late': 'the latest date for sale: format 1/1/2020',
         'state': 'pick the state this business is located in',
         'industry': 'pick the industries most closely associated with this business',
         }
+    def form_valid(self, form):
+        form.instance.user_id = Profile.objects.get(user=self.request.user).id
+        return super(BusinessForm, self).form_valid(form)

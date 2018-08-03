@@ -1,0 +1,19 @@
+{% extends 'bearmat/baseveteran.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1> Business Details </h1>
+    <h2> Broker: <a href="{% url 'profile_detail' pk=business.user.pk %}">{{ business.user }}</a>
+    <h2>{{ business.name }} <a href="{% url 'business_edit' pk=business.pk %}">(edit)</a></h2>
+    <a href="{% url 'business_delete' pk=business.pk %}">(delete business)</a>
+    <h4>earliest full-time date: {{ business.early }} </h4>
+    <h4>latest full-time date: {{ business.late }} </h4>
+    <h4>city: {{ business.city }} </h4>
+    <h4>state: {{ business.state }} </h4>
+    <h4>price & terms: {{ business.price }} </h4>
+    <h4>business industry: {{ business.industry }} </h4>
+    <h4>last update: {{ business.last_update }} </h4>
+
+{% endif %}
+{% endblock %}

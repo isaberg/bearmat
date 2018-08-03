@@ -3,11 +3,15 @@
 {% block content %}
   <h2>Welcome to Bearmat!</h2>
   <p>
-    If you want to know what Bearmat is about, check out our <a href='#'>Mission</a>.
+    If you want to know what Bearmat is about, check out our <a href="{% url 'mission' %}">Mission</a>.
   </p>
   <br>
   <p>
-    Make sure your profile is <a href='#'>up to date</a>. If you have a business to share with our network, create a listing <a href='#'>here</a>.
+    If you have a business to share with our network, create a business listing <a href='#'>here</a>.
+  </p>
+  <br>
+  <p>
+    Find veterans searching for businesses nationwide <a href="{% url 'search_list' %}">here</a>.
   </p>
   <hr>
   <h3>What's this about?</h3>

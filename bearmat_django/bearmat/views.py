@@ -90,10 +90,20 @@ def profile_edit(request, pk):
         return render(request, 'bearmat/profile_form_broker.html', {'form': form})
 
 @login_required
+def profile_delete(request, pk):
+    Profile.objects.get(id=pk).delete()
+    return redirect('home')
+
+@login_required
 @veteran_required
 def search_detail(request, pk):
     search = Search.objects.get(id=pk)
     return render(request, 'bearmat/search_detail.html', {'search': search})
+
+@login_required
+def search_list(request):
+    searches = Search.objects.all()
+    return render(request, 'bearmat/search_list.html', {'searches': searches})
 
 @login_required
 @veteran_required
@@ -102,24 +112,71 @@ def search_create(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             search = form.save()
+            search.user_id = request.user
             return redirect('search_detail', pk=search.pk)
     else:
         form = SearchForm()
-    return render(request, 'bearmat/artist_form.html', {'form': form})
+    return render(request, 'bearmat/search_form.html', {'form': form})
 
-# @login_required
-# def profile_detail(request):
-#     profile = Profile.objects.get(id=pk)
-#     return render(request, 'tunr/artist_detail.html', {'artist': artist})
-#
-# @login_required
-# def profile_create(request):
-#     if request.method == 'POST':
-#         form = ProfileForm(request.POST)
-#         if form.is_valid():
-#             song = form.save()
-#             return redirect('song_detail', pk=song.pk)
-#     else:
-#         form = SongForm()
-#     return render(request, 'tunr/song_form.html', {'form': form})
-#
+@login_required
+@veteran_required
+def search_edit(request, pk):
+    search = Search.objects.get(user_id=pk)
+    if request.method == "POST":
+        form = SearchForm(request.POST, instance=search)
+        if form.is_valid():
+            search = form.save()
+            search.user_id = request.user
+            return redirect('search_detail', pk=search.pk)
+    else:
+        form = SearchForm(instance=search)
+    return render(request, 'bearmat/search_form.html', {'form': form})
+
+@login_required
+@veteran_required
+def search_delete(request, pk):
+    Search.objects.get(id=pk).delete()
+    return redirect('home')
+
+@login_required
+def business_detail(request, pk):
+    business = Business.objects.get(id=pk)
+    return render(request, 'bearmat/business_detail.html', {'business': business})
+
+@login_required
+def business_list(request):
+    businesses = Business.objects.all()
+    return render(request, 'bearmat/business_list.html', {'businesses': businesses})
+
+@login_required
+@broker_required
+def business_create(request):
+    if request.method == 'POST':
+        form = BusinessForm(request.POST)
+        if form.is_valid():
+            business = form.save()
+            business.user_id = request.user
+            return redirect('business_detail', pk=business.pk)
+    else:
+        form = BusinessForm()
+    return render(request, 'bearmat/business_form.html', {'form': form})
+
+@login_required
+@broker_required
+def business_edit(request, pk):
+    business = Business.objects.get(user_id=pk)
+    if request.method == "POST":
+        form = BusinessForm(request.POST, instance=business)
+        if form.is_valid():
+            business = form.save()
+            business.user_id = request.user
+            return redirect('business_detail', pk=business.pk)
+    else:
+        form = BusinessForm(instance=business)
+    return render(request, 'bearmat/business_form.html', {'form': form})
+
+@login_required
+@broker_required
+def business_delete(request, pk):
+    Business.objects.get(id=pk).delete()
+    return redirect('home')

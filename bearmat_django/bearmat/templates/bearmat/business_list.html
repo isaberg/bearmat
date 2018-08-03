@@ -1,0 +1,13 @@
+{% extends 'bearmat/baseveteran.html' %}
+
+{% block content %}
+    <h2>Businesses <a href="{% url 'business_create' %}">(+)</a></h2>
+    <ul>
+        {% for business in businesses %}
+            <li>
+                <a href="{% url 'business_detail' pk=business.id %}">{{ business.name }}</a>
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
+{% endblock %}

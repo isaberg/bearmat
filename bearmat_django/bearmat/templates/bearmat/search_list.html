@@ -1,0 +1,13 @@
+{% extends 'bearmat/basebroker.html' %}
+
+{% block content %}
+    <h2>Searches active on Bearmat <a href="{% url 'search_create' %}">(+)</a></h2>
+    <ul>
+        {% for search in searches %}
+            <li>
+                <a href="{% url 'search_detail' pk=search.id %}">{{ search.name }}</a>
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
+{% endblock %}
