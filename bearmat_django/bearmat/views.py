@@ -149,7 +149,6 @@ def business_list(request):
     return render(request, 'bearmat/business_list.html', {'businesses': businesses})
 
 @login_required
-@broker_required
 def business_create(request):
     if request.method == 'POST':
         form = BusinessForm(request.POST)
